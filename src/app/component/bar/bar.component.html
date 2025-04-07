@@ -1,0 +1,98 @@
+<div class="min-h-screen p-6 bg-cover bg-center bg-no-repeat relative" [style.background-image]="'url(' + images.background + ')'">
+    
+    <!-- En-tête avec titre et icône -->
+    <div class="bg-white rounded-xl shadow-md p-6 mb-6 flex flex-col items-center justify-center text-center backdrop-blur-sm bg-opacity-90">
+      <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
+        <svg class="w-10 h-10 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800 mb-1">Mon Bar Personnel</h1>
+        <p class="text-gray-500 italic">"Tous mes cocktails disponibles"</p>
+      </div>
+    </div>
+  
+    <!-- Chargement -->
+    <div *ngIf="loading" class="flex justify-center items-center h-64">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-500"></div>
+    </div>
+    
+    <!-- Erreur -->
+    <div *ngIf="error" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
+      <p>Erreur lors du chargement des cocktails. Veuillez réessayer.</p>
+    </div>
+
+    <!-- Message de succès -->
+    <div *ngIf="successMessage" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
+      <p>{{ successMessage }}</p>
+    </div>
+  
+    <!-- Conteneur avec scroll horizontal -->
+    <div class="relative">
+      <!-- Grille des cocktails avec scroll horizontal - version Tailwind pure -->
+      <div class="flex overflow-x-auto pb-6 space-x-6 px-6 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <!-- Carte pour chaque cocktail -->
+        <div *ngFor="let cocktail of cocktails" class="bg-white rounded-xl shadow-md overflow-hidden transition-transform hover:scale-105 w-72 flex-shrink-0 backdrop-blur-sm bg-opacity-90">
+          <!-- Image du cocktail -->
+          <div class="h-48 bg-gray-100 flex items-center justify-center overflow-hidden relative">
+            <img [src]="cocktail.imageUrl || 'assets/default-cocktail.jpg'" [alt]="cocktail.nom" class="w-full h-full object-cover">
+            <!-- Badge alcoolisé/non alcoolisé -->
+            <span class="absolute top-2 right-2 px-2 py-1 text-xs rounded-full" 
+                  [class.bg-blue-100]="!cocktail.alcoolise" 
+                  [class.text-blue-800]="!cocktail.alcoolise"
+                  [class.bg-purple-100]="cocktail.alcoolise"
+                  [class.text-purple-800]="cocktail.alcoolise">
+              {{ cocktail.alcoolise ? 'Alcoolisé' : 'Sans alcool' }}
+            </span>
+          </div>
+          
+          <div class="p-4">
+            <h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1">{{ cocktail.nom }}</h3>
+            <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ cocktail.description }}</p>
+            
+            <div class="flex flex-wrap gap-2 mb-3 max-h-20 overflow-y-auto">
+              <!-- Badge pour chaque ingrédient -->
+              <span *ngFor="let ingredient of cocktail.ingredients" 
+                    class="px-2 py-1 bg-amber-100 text-amber-800 text-xs rounded-full">
+                {{ ingredient.nom }}
+              </span>
+            </div>
+            
+            <!-- Bouton Boire -->
+            <button class="w-full py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center"
+                    (click)="boireCocktail(cocktail.id)">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              Boire
+            </button>
+          </div>
+        </div>
+        
+        <!-- Carte pour créer un nouveau cocktail -->
+        <a href="/Laboratoire" class="bg-white rounded-xl shadow-md overflow-hidden flex items-center justify-center border-2 border-dashed border-gray-300 hover:border-amber-400 transition-colors w-72 h-96 flex-shrink-0 backdrop-blur-sm bg-opacity-90">
+          <div class="p-6 text-center">
+            <svg class="w-10 h-10 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            <p class="mt-2 text-gray-600 font-medium">Créer un cocktail</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Message quand il n'y a pas de cocktails -->
+    <div *ngIf="!loading && cocktails.length === 0" class="text-center py-12 backdrop-blur-sm bg-white bg-opacity-80 rounded-xl">
+      <svg class="w-16 h-16 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+      </svg>
+      <h3 class="mt-4 text-lg font-medium text-gray-900">Votre bar est vide</h3>
+      <p class="mt-1 text-sm text-gray-500">Commencez par créer votre premier cocktail !</p>
+      <div class="mt-6">
+        <a href="/Laboratoire" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-amber-600 hover:bg-amber-700">
+          Créer un cocktail
+        </a>
+      </div>
+    </div>
+</div>

@@ -1,30 +1,53 @@
 <div class="border-r flex flex-col border-gray-200 justify-between h-full bg-gradient-to-b from-white to-gray-50 shadow-sm">
-	<div>
-		<div class="p-4 border-b border-gray-200 bg-white">
-			<h1 class="text-xl font-bold text-orange-600 flex items-center">
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-				</svg>
-				Bar à Cocktails
-			</h1>
-		</div>
-		<div class="m-3 flex flex-col gap-2">
-			<div class="hover:bg-orange-50 rounded-lg cursor-pointer p-3 transition-all duration-200 flex items-center text-gray-700 hover:text-orange-600" 
-				 [routerLink]="['Laboratoire']"
-				 routerLinkActive="bg-orange-100 text-orange-700 font-medium">
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-				</svg>
-				Laboratoire
-			</div>
-			<div class="hover:bg-orange-50 rounded-lg cursor-pointer p-3 transition-all duration-200 flex items-center text-gray-700 hover:text-orange-600" 
-				 [routerLink]="['Frigo']"
-				 routerLinkActive="bg-orange-100 text-orange-700 font-medium">
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-				</svg>
-				Frigo
-			</div>
-		</div>
-	</div>
+    <div>
+        <div class="p-4 border-b border-gray-200 bg-white">
+            <h1 class="text-xl font-bold text-orange-600 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+                Bar à Cocktails
+            </h1>
+        </div>
+        <div class="m-3 flex flex-col gap-2">
+            <!-- Laboratoire -->
+            <div class="hover:bg-orange-50 rounded-lg cursor-pointer p-3 transition-all duration-200 flex items-center text-gray-700 hover:text-orange-600" 
+                 [routerLink]="['Laboratoire']"
+                 routerLinkActive="bg-orange-100 text-orange-700 font-medium">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                </svg>
+                Laboratoire
+            </div>
+            
+            <!-- Frigo -->
+            <div class="hover:bg-orange-50 rounded-lg cursor-pointer p-3 transition-all duration-200 flex items-center text-gray-700 hover:text-orange-600" 
+                 [routerLink]="['Frigo']"
+                 routerLinkActive="bg-orange-100 text-orange-700 font-medium">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18a2 2 0 012 2v14a2 2 0 01-2 2H3a2 2 0 01-2-2V5a2 2 0 012-2zm0 4v10h18V7H3z" />
+                </svg>
+                Frigo
+            </div>
+            
+            <!-- Bar -->
+            <div class="hover:bg-orange-50 rounded-lg cursor-pointer p-3 transition-all duration-200 flex items-center text-gray-700 hover:text-orange-600" 
+                 [routerLink]="['Bar']"
+                 routerLinkActive="bg-orange-100 text-orange-700 font-medium">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Bar
+            </div>
+            
+            <!-- Login -->
+            <div class="hover:bg-orange-50 rounded-lg cursor-pointer p-3 transition-all duration-200 flex items-center text-gray-700 hover:text-orange-600" 
+                 [routerLink]="['Login']"
+                 routerLinkActive="bg-orange-100 text-orange-700 font-medium">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                </svg>
+                Login
+            </div>
+        </div>
+    </div>
 </div>

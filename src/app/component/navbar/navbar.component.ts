@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -7,7 +6,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   imports: [		
     RouterLink,
 		RouterLinkActive,
-		NgIf],
+		],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })

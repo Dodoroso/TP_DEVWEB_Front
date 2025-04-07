@@ -1,36 +1,53 @@
 import { Component } from '@angular/core';
+import { CocktailService } from '../../services/cocktail.service';
+import { Cocktail} from "../../models/cocktail";
+import { Ingredient } from "../../models/ingredient";
 import Images from '../../../constants/image';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { NgForOf, NgIf } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-laboratoire',
-  imports: [],
   templateUrl: './laboratoire.component.html',
-  styleUrl: './laboratoire.component.css'
+  styleUrls: ['./laboratoire.component.css'],
+  imports: [NgForOf,FormsModule,NgIf],
 })
 export class LaboratoireComponent {
   niveauLiquide = 0;
   images = Images;
   vidageEnCours = false;
   enregistrementEnCours = false;
-  listeIngredients: string[] = []; // Ajout d'un tableau pour stocker les ingrédients
+  
+  // Pour la création temporaire des ingrédients
+  listeIngredients: Partial<Ingredient>[] = []; 
+  
+  // Données du formulaire
+  nomCocktail = '';
+  description = '';
+  alcoolise = true;
+  imageUrl = '';
 
-  ajouterIngredient(ingredient: string) {
+  constructor(private cocktailService: CocktailService) {}
+
+  ajouterIngredient(nom: string, quantite: string, unite: string) {
     if (this.niveauLiquide < 100) {
-      this.niveauLiquide += 20; // Augmente de 20% à chaque ajout
-      this.listeIngredients.push(ingredient); // Ajoute l'ingrédient à la liste
+      this.niveauLiquide += 20;
+      this.listeIngredients.push({
+        nom,
+        quantite,
+        unite
+        // Pas d'id car sera généré par le backend
+      });
     }
   }
 
   viderVerre() {
     this.vidageEnCours = true;
-    
-    // Simule une animation de vidage (1 seconde)
     setTimeout(() => {
-      this.niveauLiquide = 0; // Réinitialise le niveau de liquide
-      this.listeIngredients = []; // Vide la liste des ingrédients
+      this.niveauLiquide = 0;
+      this.listeIngredients = [];
       this.vidageEnCours = false;
-      
-      console.log('Verre vidé !', this.listeIngredients);
     }, 1000);
   }
 
@@ -40,22 +57,45 @@ export class LaboratoireComponent {
       return;
     }
 
+    if (!this.nomCocktail) {
+      alert('Veuillez donner un nom à votre cocktail');
+      return;
+    }
+
     this.enregistrementEnCours = true;
-    
-    // Simule un appel API (2 secondes)
-    setTimeout(() => {
-      const cocktail = {
-        nom: 'Cocktail personnalisé',
-        ingredients: this.listeIngredients,
-        niveau: this.niveauLiquide,
-        date: new Date()
-      };
-      
-      console.log('Cocktail enregistré:', cocktail);
-      this.enregistrementEnCours = false;
-      
-      // Option: Réinitialiser après enregistrement
-      // this.viderVerre();
-    }, 2000);
+
+    // Préparation des données à envoyer (sans id)
+    const cocktailData: Omit<Cocktail, 'id'> = {
+      nom: this.nomCocktail,
+      description: this.description,
+      alcoolise: this.alcoolise,
+      imageUrl: this.imageUrl || 'assets/default-cocktail.jpg',
+      ingredients: this.listeIngredients as Ingredient[] // Conversion en Ingredient[]
+    };
+
+    this.cocktailService.createCocktail(cocktailData).subscribe({
+      next: (cocktailCree: Cocktail) => {
+        console.log('Cocktail créé avec ID:', cocktailCree.id);
+        this.enregistrementEnCours = false;
+        this.viderVerre();
+        this.resetForm();
+      },
+      error: (err) => {
+        console.error("Erreur lors de l'enregistrement:", err);
+        this.enregistrementEnCours = false;
+      }
+    });
+  }
+
+  private resetForm() {
+    this.nomCocktail = '';
+    this.description = '';
+    this.alcoolise = true;
+    this.imageUrl = '';
+  }
+
+  supprimerIngredient(index: number) {
+    this.listeIngredients.splice(index, 1);
+    this.niveauLiquide = Math.max(0, this.niveauLiquide - 20);
   }
 }

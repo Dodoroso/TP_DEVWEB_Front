@@ -1,49 +1,102 @@
-<!-- Conteneur principal avec fond d'écran -->
 <div class="min-h-screen p-6 bg-cover bg-center bg-no-repeat relative" [style.background-image]="'url(' + images.background + ')'">
     
-<!-- En-tête avec titre et icône -->
-<div class="bg-white rounded-xl shadow-md p-6 mb-6 flex flex-col items-center justify-center text-center">
-    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
-      <svg class="w-10 h-10 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-      </svg>
-    </div>
-    <div>
-      <h1 class="text-3xl font-bold text-gray-800 mb-1">Mon Frigo à Cocktails</h1>
-      <p class="text-gray-500 italic">"Toutes mes créations rafraîchissantes"</p>
-    </div>
-  </div>
-  
-    <!-- Grille des cocktails - Modifié en flex avec wrap -->
-    <div class="flex flex-wrap gap-4">
-      
-      <!-- Carte de cocktail individuelle -->
-      <div class="bg-white rounded-xl shadow-md overflow-hidden transition-transform hover:scale-105 w-64 flex-shrink-0">
-        <div class="p-4 border-b-2 border-orange-100 bg-orange-50">
-          <h3 class="font-bold text-lg text-orange-800">Apple Oder Mirroca</h3>
-        </div>
-        <div class="p-4">
-          <div class="flex flex-wrap gap-2 mb-3">
-            <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">Vodka</span>
-            <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">Jus de pomme</span>
-            <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">Menthe</span>
-          </div>
-          <button class="w-full py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm font-medium">
-            Voir la recette
-          </button>
-        </div>
+    <!-- En-tête avec titre et icône -->
+    <div class="bg-white rounded-xl shadow-md p-6 mb-6 flex flex-col items-center justify-center text-center">
+      <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+        <svg class="w-10 h-10 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
       </div>
-      
-      <!-- Ajouter d'autres cartes de cocktails ici avec la même structure -->
-      
-      <!-- Carte pour créer un nouveau cocktail -->
-      <a href="/Laboratoire" class="bg-white rounded-xl shadow-md overflow-hidden flex items-center justify-center border-2 border-dashed border-gray-300 hover:border-blue-400 transition-colors w-64 h-64 flex-shrink-0">
-        <div class="p-6 text-center">
-          <svg class="w-10 h-10 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-          </svg>
-          <p class="mt-2 text-gray-600 font-medium">Créer un nouveau cocktail</p>
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800 mb-1">Mon Frigo à Cocktails</h1>
+        <p class="text-gray-500 italic">"Toutes mes créations rafraîchissantes"</p>
+      </div>
+    </div>
+  
+    <!-- Chargement -->
+    <div *ngIf="loading" class="flex justify-center items-center h-64">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+    </div>
+  
+    <!-- Erreur -->
+    <div *ngIf="error" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
+      <p>Erreur lors du chargement des cocktails. Veuillez réessayer.</p>
+    </div>
+  
+    <!-- Conteneur avec scroll horizontal -->
+    <div class="relative">
+      <!-- Indicateur visuel de scroll (flèche droite) -->
+      <div class="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent z-10 flex items-center justify-end pr-2 pointer-events-none">
+        <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </div>
+
+      <!-- Grille des cocktails avec scroll horizontal -->
+      <div class="flex overflow-x-auto pb-6 space-x-6 px-6 scrollbar-hide">
+        <!-- Carte pour chaque cocktail -->
+        <div *ngFor="let cocktail of cocktails" class="bg-white rounded-xl shadow-md overflow-hidden transition-transform hover:scale-105 w-72 flex-shrink-0">
+          <!-- Image du cocktail -->
+          <div class="h-48 bg-gray-100 flex items-center justify-center overflow-hidden">
+            <img [src]="cocktail.imageUrl || 'assets/default-cocktail.jpg'" [alt]="cocktail.nom" class="w-full h-full object-cover">
+          </div>
+          
+          <div class="p-4 border-b-2 border-orange-100 bg-orange-50">
+            <h3 class="font-bold text-lg text-orange-800 line-clamp-1">{{ cocktail.nom }}</h3>
+            <p class="text-sm text-gray-600 mt-1 line-clamp-2">{{ cocktail.description }}</p>
+          </div>
+          
+          <div class="p-4">
+            <div class="flex flex-wrap gap-2 mb-3 max-h-20 overflow-y-auto">
+              <!-- Badge pour chaque ingrédient -->
+              <span *ngFor="let ingredient of cocktail.ingredients" 
+                    class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full flex-shrink-0">
+                {{ ingredient.nom }} ({{ ingredient.quantite }} {{ ingredient.unite }})
+              </span>
+            </div>
+            
+            <!-- Badge alcoolisé/non alcoolisé -->
+            <div class="mb-3">
+              <span class="px-2 py-1 text-xs rounded-full" 
+                    [class.bg-blue-100]="!cocktail.alcoolise" 
+                    [class.text-blue-800]="!cocktail.alcoolise"
+                    [class.bg-purple-100]="cocktail.alcoolise"
+                    [class.text-purple-800]="cocktail.alcoolise">
+                {{ cocktail.alcoolise ? 'Alcoolisé' : 'Sans alcool' }}
+              </span>
+            </div>
+            
+            <button class="w-full py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm font-medium transition-colors">
+              Voir la recette
+            </button>
+          </div>
         </div>
-      </a>
+        
+        <!-- Carte pour créer un nouveau cocktail (toujours visible) -->
+        <a href="/Laboratoire" class="bg-white rounded-xl shadow-md overflow-hidden flex items-center justify-center border-2 border-dashed border-gray-300 hover:border-blue-400 transition-colors w-72 h-96 flex-shrink-0">
+          <div class="p-6 text-center">
+            <svg class="w-10 h-10 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            <p class="mt-2 text-gray-600 font-medium">Créer un nouveau cocktail</p>
+          </div>
+        </a>
+      </div>
     </div>
 </div>
+
+<style>
+  /* Style personnalisé pour masquer la scrollbar tout en gardant le fonctionnel */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Animation pour le bouton Voir la recette */
+  button {
+    transition: all 0.2s ease;
+  }
+</style>
